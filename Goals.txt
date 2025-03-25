@@ -1,0 +1,22 @@
+Game loop 7
+Game state manager 7
+Build a Grid 7
+Make a list of grid objects 7
+Make a Player 7
+    Make a movement system 7
+        Build the input combo system 7
+Graphics
+    Player model 7
+    Chess board model 7
+    Flag Model 7
+    Goal Model 7
+    Menu buttons
+
+Notes
+find the pixel dimensions of a single square.
+each square has the area of 85 x 64 pixels
+square_dim = pygame.draw.rect(screen, 'blue', (123, 298, 85, 64), 0)
+#now to find the center of each of these rectangles
+square_center = (square_dim.x + (square_dim.width // 2), square_dim.y + (square_dim.height // 2))
+pygame.draw.circle(screen, 'green', square_center, 5)
+draw the grid
