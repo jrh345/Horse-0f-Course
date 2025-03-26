@@ -35,4 +35,11 @@ your move order.
 
 ### Black screen (Like I said work in progress)
 If you are getting a blank window when you run this program it is because you must input a score to win into the terminal before the game opens.
+<<<<<<< HEAD
 ![Screenshot 2025-03-25 004615](https://github.com/user-attachments/assets/5888fd67-ecb6-4a2f-b8f6-a9390093d01c)
+=======
+![Screenshot 2025-03-25 004615](https://github.com/user-attachments/assets/5888fd67-ecb6-4a2f-b8f6-a9390093d01c)
+
+
+
+>>>>>>> febe002a8bcaa78d577a1eb4be7f3c39b01b2414
