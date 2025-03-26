@@ -78,12 +78,14 @@ def get_score_limit(screen, clock):
     font = pygame.font.Font(None, 36)  # Create a font object
     input_text = ""  # Store the user's input
     input_active = True  # Flag to keep the input box active
+    background = pygame.transform.scale(pygame.image.load(EPIC_BACKGROUND).convert(), (WIDTH, HEIGHT))
+    #screen.blit(background, (0, 0))  # Display the background image
 
     while input_active:
-        screen.fill((0, 0, 0))  # Clear the screen with a black background
+        
         prompt_text = font.render("Enter Score Limit (Press Enter to Confirm):", True, (255, 255, 255))
+        screen.blit(background, (0, 0))  # Display the background image
         screen.blit(prompt_text, (50, 100))  # Display the prompt text
-
         # Render the input text dynamically
         input_surface = font.render(input_text, True, (255, 255, 255))
         screen.blit(input_surface, (50, 150))  # Display the input text
@@ -104,7 +106,7 @@ def get_score_limit(screen, clock):
                     input_text = input_text[:-1]
                 else:
                     input_text += event.unicode  # Add the typed character to the input
-
+        
         clock.tick(FPS)  # Limit the frame rate
 
 def main_loop(grid, screen, clock):
@@ -119,6 +121,7 @@ def main_loop(grid, screen, clock):
     game_on = True
 
     SCORE_LIMIT = get_score_limit(screen, clock)
+    screen.fill((0, 0, 0))  # Clear the screen with a black background
     pygame.font.init()
     font = pygame.font.Font(None, 36)
     start_time = pygame.time.get_ticks()

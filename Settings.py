@@ -37,6 +37,7 @@ BLACK_GOAL = "image_files\B_Queen.png"
 WHITE = "image_files\W_Knight1.png"
 WHITE_FLAG = "image_files\W_Pawn1.png"
 WHITE_GOAL = "image_files\W_Queen.png"
+EPIC_BACKGROUND = "image_files\\burning_knight.png"
 
 #CUSTOM GRID SETTINGS
 HORIZONTAL_SPACING = 85
