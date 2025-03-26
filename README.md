@@ -33,11 +33,9 @@ your move order.
 -this is left -> up
 ![Screenshot 2025-03-25 003702](https://github.com/user-attachments/assets/37606535-583c-462d-831f-725d7dec6006)
 
-### Black screen (Like I said work in progress)
-If you are getting a blank window when you run this program it is because you must input a score to win into the terminal before the game opens.
+### Black screen (Older build version)
+If you are getting a blank window when you run this program it is because you must input a score limit into the terminal before the game opens.
 <<<<<<< HEAD
-![Screenshot 2025-03-25 004615](https://github.com/user-attachments/assets/5888fd67-ecb6-4a2f-b8f6-a9390093d01c)
-=======
 ![Screenshot 2025-03-25 004615](https://github.com/user-attachments/assets/5888fd67-ecb6-4a2f-b8f6-a9390093d01c)
 
 
