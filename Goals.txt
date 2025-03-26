@@ -20,3 +20,8 @@ square_dim = pygame.draw.rect(screen, 'blue', (123, 298, 85, 64), 0)
 square_center = (square_dim.x + (square_dim.width // 2), square_dim.y + (square_dim.height // 2))
 pygame.draw.circle(screen, 'green', square_center, 5)
 draw the grid
+
+# left_border = pygame.draw.line(screen, 'red', (30, 100), (30, 620), 1)
+# right_border = pygame.draw.line(screen, 'red', (725, 100), (725, 620), 1)
+# top_border = pygame.draw.line(screen, 'red', (30, 100), (725, 100), 1)
+# bottom_border = pygame.draw.line(screen, 'red', (30, 620), (725, 620), 1)

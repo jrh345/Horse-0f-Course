@@ -12,6 +12,22 @@ PLAYER_START_Y = 200
 PLAYER_SIZE = 0.15
 PLAYER_SPEED = 8
 
+#PLayer Icons and scoreboard
+#White Player coordinates
+WHITE_PLAYER_X = WIDTH * 4/5
+WHITE_PLAYER_Y = HEIGHT * 1/10
+#White Player scoreboard
+WHITE_SCORE_X = WIDTH * 4/5
+WHITE_SCORE_Y = HEIGHT * 2/10
+
+#Black Player coordinates
+BLACK_PLAYER_X = WIDTH * 4/5
+BLACK_PLAYER_Y = HEIGHT * 4/10
+
+#Black Player scoreboard
+BLACK_SCORE_X = WIDTH * 4/5
+BLACK_SCORE_Y = HEIGHT * 5/10
+
 #Player Colors
 #BLACK and WHITE are the images for the knight pieces
 

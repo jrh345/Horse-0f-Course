@@ -70,6 +70,43 @@ def draw_grid(screen, grid):
             if grid.get(x, y) is not None:
                 screen.blit(grid.get(x, y).image, (rect.x, rect.y))  # Draw player images
 
+def get_score_limit(screen, clock):
+    """
+    Display an input box for the user to enter a score limit.
+    """
+    pygame.font.init()
+    font = pygame.font.Font(None, 36)  # Create a font object
+    input_text = ""  # Store the user's input
+    input_active = True  # Flag to keep the input box active
+
+    while input_active:
+        screen.fill((0, 0, 0))  # Clear the screen with a black background
+        prompt_text = font.render("Enter Score Limit (Press Enter to Confirm):", True, (255, 255, 255))
+        screen.blit(prompt_text, (50, 100))  # Display the prompt text
+
+        # Render the input text dynamically
+        input_surface = font.render(input_text, True, (255, 255, 255))
+        screen.blit(input_surface, (50, 150))  # Display the input text
+
+        pygame.display.update()  # Refresh the display
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:  # Confirm input with Enter
+                    if input_text.isdigit():  # Validate that the input is a number
+                        return int(input_text)
+                    else:
+                        input_text = ""  # Clear invalid input
+                elif event.key == pygame.K_BACKSPACE:  # Handle backspace
+                    input_text = input_text[:-1]
+                else:
+                    input_text += event.unicode  # Add the typed character to the input
+
+        clock.tick(FPS)  # Limit the frame rate
+
 def main_loop(grid, screen, clock):
     input_combo_black = []
     input_combo_white = []
@@ -81,8 +118,17 @@ def main_loop(grid, screen, clock):
     goal_white = all_grid_objects[5]
     game_on = True
 
-    SCORE_LIMIT = int(input("Please set a score limit for this game:"))
+    SCORE_LIMIT = get_score_limit(screen, clock)
+    pygame.font.init()
+    font = pygame.font.Font(None, 36)
+    start_time = pygame.time.get_ticks()
     while game_on:
+        # Calculate elapsed time
+        elapsed_time_ms = pygame.time.get_ticks() - start_time
+        elapsed_time_sec = elapsed_time_ms // 1000
+        minutes = elapsed_time_sec // 60
+        seconds = elapsed_time_sec % 60
+        timer_text = f"Time: {minutes:02}:{seconds:02}"
 
         background = pygame.transform.scale(pygame.image.load("image_files/board_persp_05.png").convert(), (CHESS_BOARD[0] * SCALAR, CHESS_BOARD[1] * SCALAR))
         for event in pygame.event.get():
@@ -224,13 +270,27 @@ def main_loop(grid, screen, clock):
 
 
         screen.blit(background, (0, 0))
-        # left_border = pygame.draw.line(screen, 'red', (30, 100), (30, 620), 1)
-        # right_border = pygame.draw.line(screen, 'red', (725, 100), (725, 620), 1)
-        # top_border = pygame.draw.line(screen, 'red', (30, 100), (725, 100), 1)
-        # bottom_border = pygame.draw.line(screen, 'red', (30, 620), (725, 620), 1)
         
         # Draw the grid after handling events
         draw_grid(screen, grid)
+
+        # Draw the players and their scores
+        screen.blit(player_black.image, (BLACK_PLAYER_X, BLACK_PLAYER_Y))
+        screen.blit(player_white.image, (WHITE_PLAYER_X, WHITE_PLAYER_Y))
+
+        black_score_text = font.render(f"Black Score: {player_black.points_count}", True, (255, 255, 255))
+        white_score_text = font.render(f"White Score: {player_white.points_count}", True, (255, 255, 255))
+
+        # Draw the timer
+        timer_text_surface = font.render(timer_text, True, (255, 255, 255))
+        screen.fill((0, 0, 0), (WIDTH * 3/5 - 25, HEIGHT * 9/10, WIDTH * 3/5 + 25, HEIGHT * 9/10 + 20))
+        screen.blit(timer_text_surface, (WIDTH * 3/5 - 25, HEIGHT * 9/10))
+
+        # Clears the score text before drawing the new score
+        screen.fill((0, 0, 0), (WHITE_SCORE_X, WHITE_SCORE_Y, WHITE_SCORE_X + 50, WHITE_SCORE_Y+ 20))
+        screen.fill((0, 0, 0), (BLACK_SCORE_X, BLACK_SCORE_Y, BLACK_SCORE_X + 50, BLACK_SCORE_Y + 20))
+        screen.blit(black_score_text, (BLACK_SCORE_X, BLACK_SCORE_Y))
+        screen.blit(white_score_text, (WHITE_SCORE_X, WHITE_SCORE_Y))
         
         pygame.display.update()
         clock.tick(FPS)
@@ -239,6 +299,8 @@ def main_loop(grid, screen, clock):
 def main():
     
     pygame.init()
+    pygame.font.init()
+    font = pygame.font.Font(None, 36)  # Create a font object
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Horse of Course")
     clock = pygame.time.Clock()
@@ -253,13 +315,22 @@ def main():
     add_object(WHITE_GOAL, grid, Goal, 0, 0)
     print(grid)
     black, white = main_loop(grid, screen, clock)
-
-    if black > white:
-        print(f"CONGRATULATIONS BLACK!, you scored {black}!")
-        print(f"Better luck next time WHITE, you scored {white}")
-    else:
-        print(f"CONGRATULATIONS WHITE!, you scored {white}!")
-        print(f"Better luck next time BLACK, you scored {black}")
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+        if black > white:
+            black_victory_text = font.render(f"Black Wins!", True, (255, 255, 255))
+            screen.blit(black_victory_text, (WIDTH * 4/5, HEIGHT * 6/10))
+            pygame.display.update()
+        else:
+            white_victory_text = font.render(f"White Wins!", True, (255, 255, 255))
+            screen.blit(white_victory_text, (WIDTH * 4/5, HEIGHT * 6/10))
+            pygame.display.update()
+        goodbye_text = font.render("Thanks for playing!", True, (255, 255, 255))
+        screen.blit(goodbye_text, (WIDTH * 4/5 - 30, HEIGHT * 7/10))
+        pygame.display.update()
 
 
 if __name__ == "__main__":
