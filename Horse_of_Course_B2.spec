@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='Horse_of_Course_B1',
+    name='Horse_of_Course_B2',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
