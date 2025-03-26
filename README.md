@@ -5,11 +5,11 @@ This is very much a work in progress.
 
 ### features to be added
 - score board
-- timer
-- victory screen
+- timer (basic form)
+- victory screen (basic form)
 - sounds
 - animations
-- point limit (in app)
+- Set score limit in app (basic form)
 
 Images in the 'image_files' are from free 3rd party website. I do not own them.
 
