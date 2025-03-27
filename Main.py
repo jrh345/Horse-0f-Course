@@ -108,6 +108,34 @@ def get_score_limit(screen, clock):
                     input_text += event.unicode  # Add the typed character to the input
         
         clock.tick(FPS)  # Limit the frame rate
+def reset_game(grid,screen):
+    rest_text = "Do you want to play again? (y/n)"
+    font = pygame.font.Font(None, 36)  # Create a font object
+    rest_text_surface = font.render(rest_text, True, (255, 255, 255))
+    screen.blit(rest_text_surface, (WIDTH//4, HEIGHT//2))  # Display the prompt text
+    pygame.display.update()  # Refresh the display
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == pygame.KEYDOWN:
+                key = pygame.key.name(event.key)
+                if key == 'y':
+                    for y in range(COLS):
+                        for x in range(ROWS):
+                            remove_object(grid, x, y)
+                    return True
+                elif key == 'n':
+                    while True:
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pygame.quit()
+                                exit()
+                        goodbye_text = font.render("Thanks for playing!", True, (255, 255, 255))
+                        screen.blit(goodbye_text, (WIDTH * 4/5 - 30, HEIGHT * 7/10))
+                        pygame.display.update()
+                    
 
 def main_loop(grid, screen, clock):
     input_combo_black = []
@@ -307,22 +335,20 @@ def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Horse of Course")
     clock = pygame.time.Clock()
+    
     # Set up the grid
     grid = Grid(ROWS, COLS)
-    # Create the players
-    add_object(BLACK, grid, Player, ROWS - 1, random.randint(0, COLS - 2))
-    add_object(WHITE, grid, Player, 0, random.randint(1, COLS - 1))
-    add_object(BLACK_FLAG, grid, Flag, random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
-    add_object(WHITE_FLAG, grid, Flag, random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
-    add_object(BLACK_GOAL, grid, Goal, ROWS - 1, COLS - 1)
-    add_object(WHITE_GOAL, grid, Goal, 0, 0)
-    print(grid)
-    black, white = main_loop(grid, screen, clock)
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
+    go_again = True
+    while go_again:
+        # Create the players
+        add_object(BLACK, grid, Player, ROWS - 1, random.randint(0, COLS - 2))
+        add_object(WHITE, grid, Player, 0, random.randint(1, COLS - 1))
+        add_object(BLACK_FLAG, grid, Flag, random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
+        add_object(WHITE_FLAG, grid, Flag, random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
+        add_object(BLACK_GOAL, grid, Goal, ROWS - 1, COLS - 1)
+        add_object(WHITE_GOAL, grid, Goal, 0, 0)
+        print(grid)
+        black, white = main_loop(grid, screen, clock)
         if black > white:
             black_victory_text = font.render(f"Black Wins!", True, (255, 255, 255))
             screen.blit(black_victory_text, (WIDTH * 4/5, HEIGHT * 6/10))
@@ -331,9 +357,7 @@ def main():
             white_victory_text = font.render(f"White Wins!", True, (255, 255, 255))
             screen.blit(white_victory_text, (WIDTH * 4/5, HEIGHT * 6/10))
             pygame.display.update()
-        goodbye_text = font.render("Thanks for playing!", True, (255, 255, 255))
-        screen.blit(goodbye_text, (WIDTH * 4/5 - 30, HEIGHT * 7/10))
-        pygame.display.update()
+        go_again = reset_game(grid,screen)
 
 
 if __name__ == "__main__":
