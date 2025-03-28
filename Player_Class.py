@@ -23,7 +23,7 @@ class Player(pygame.sprite.Sprite):
         return f"({self.color}, {self.__class__.__name__})"
     
     def __repr__(self):
-        return f"({self.color},{self.grid} {self.__class__.__name__},{self.x},{self.y})"
+        return f"({self.color},{self.__class__.__name__},{self.x},{self.y})"
 
     def move(self, dx, dy):
         new_x = self.x + dx
@@ -94,7 +94,7 @@ class Flag(pygame.sprite.Sprite):
         return f"({self.color}, {self.__class__.__name__})"
     
     def __repr__(self):
-        return f"({self.color}, {self.grid}, {self.__class__.__name__}, {self.x}, {self.y})"
+        return f"({self.color}, {self.__class__.__name__}, {self.x}, {self.y})"
 
 class Goal(pygame.sprite.Sprite):
     def __init__(self, color, grid, x, y):
@@ -111,4 +111,4 @@ class Goal(pygame.sprite.Sprite):
         return f"({self.color}, {self.__class__.__name__})"
     
     def __repr__(self):
-        return f"({self.color}, {self.grid}, {self.__class__.__name__}, {self.x}, {self.y})"
+        return f"({self.color}, {self.__class__.__name__}, {self.x}, {self.y})"

@@ -6,8 +6,6 @@ from Settings import *
 
 
 all_grid_objects = []
-player_white = None
-player_black = None
 def add_object(color,grid, object_type, x, y):
     """
     Attempt to add an object to grid
@@ -64,9 +62,6 @@ def draw_grid(screen, grid):
     for y in range(grid.height):
         for x in range(grid.width):
             rect = pygame.Rect(x * HORIZONTAL_SPACING + GRID_OFFSET_X, y * VERTICAL_SPACING + GRID_OFFSET_Y, HORIZONTAL_SPACING, VERTICAL_SPACING)
-            # pygame.draw.rect(screen, (255, 255, 255), rect, 1)  # Draw grid lines
-            # pygame.draw.circle(screen, (0, 0, 0), (rect.x + rect.width / 2, rect.y + rect.height / 2), 3)  # Draw grid centers
-            # Check if there is a player at this grid position
             if grid.get(x, y) is not None:
                 screen.blit(grid.get(x, y).image, (rect.x, rect.y))  # Draw player images
 
@@ -147,6 +142,7 @@ def main_loop(grid, screen, clock):
     goal_black = all_grid_objects[4]
     goal_white = all_grid_objects[5]
     game_on = True
+    print(all_grid_objects)
 
     SCORE_LIMIT = get_score_limit(screen, clock)
     screen.fill((0, 0, 0))  # Clear the screen with a black background
@@ -230,7 +226,7 @@ def main_loop(grid, screen, clock):
                             player_black.add_points(1)
                         else:
                             player_black.bounce( random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
-                            print("No puppy guarding!")
+                            print("Don't come back empty handed!")
                     # Move the player to unoccupied space
                     else:
                         player_black.move(dx_black, dy_black)
@@ -291,7 +287,7 @@ def main_loop(grid, screen, clock):
                             player_white.add_points(1)
                         else:
                             player_white.bounce( random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
-                            print("No puppy guarding!")
+                            print("Don't come back empty handed!")
                     # Move the player to unoccupied space
                     else:
                         player_white.move(dx_white, dy_white)
@@ -340,6 +336,7 @@ def main():
     grid = Grid(ROWS, COLS)
     go_again = True
     while go_again:
+        all_grid_objects.clear()
         # Create the players
         add_object(BLACK, grid, Player, ROWS - 1, random.randint(0, COLS - 2))
         add_object(WHITE, grid, Player, 0, random.randint(1, COLS - 1))
