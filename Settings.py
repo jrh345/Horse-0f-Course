@@ -38,6 +38,9 @@ WHITE = "image_files\W_Knight1.png"
 WHITE_FLAG = "image_files\W_Pawn1.png"
 WHITE_GOAL = "image_files\W_Queen.png"
 EPIC_BACKGROUND = "image_files\\burning_knight.png"
+MUSIC_TRACK_1 = "Music_files\Horse_go_fast.mp3"
+MUSIC_TRACK_2 = "Music_files\Horsey_go_faster.mp3"
+MUSIC_FILES = [MUSIC_TRACK_1, MUSIC_TRACK_2]
 
 #CUSTOM GRID SETTINGS
 HORIZONTAL_SPACING = 85

@@ -54,6 +54,12 @@ def remove_object(grid, x, y):
         all_grid_objects.remove(grid_ref)
     return
 
+def rand_free_space(grid):
+    free_spaces = [(x, y) for x in range(ROWS) for y in range(COLS) if grid.get(x, y) is None]
+    if not free_spaces:
+        raise ValueError("No free spaces available in the grid.")
+    return random.choice(free_spaces)
+
 
 def draw_grid(screen, grid):
     """
@@ -130,6 +136,12 @@ def reset_game(grid,screen):
                         goodbye_text = font.render("Thanks for playing!", True, (255, 255, 255))
                         screen.blit(goodbye_text, (WIDTH * 4/5 - 30, HEIGHT * 7/10))
                         pygame.display.update()
+
+def play_next_track():
+    global current_track
+    pygame.mixer.music.load(MUSIC_FILES[current_track])
+    pygame.mixer.music.play()
+    current_track = (current_track + 1) % len(MUSIC_FILES)  # Move to the next track (loop back to the start)
                     
 
 def main_loop(grid, screen, clock):
@@ -137,12 +149,14 @@ def main_loop(grid, screen, clock):
     input_combo_white = []
     player_black = all_grid_objects[0]
     player_white = all_grid_objects[1]
-    flag_black = all_grid_objects[2]
-    flag_white = all_grid_objects[3]
-    goal_black = all_grid_objects[4]
-    goal_white = all_grid_objects[5]
+    goal_black = all_grid_objects[2]
+    goal_white = all_grid_objects[3]
+    flag_black = all_grid_objects[4]
+    flag_white = all_grid_objects[5]
     game_on = True
     print(all_grid_objects)
+
+    
 
     SCORE_LIMIT = get_score_limit(screen, clock)
     screen.fill((0, 0, 0))  # Clear the screen with a black background
@@ -190,7 +204,7 @@ def main_loop(grid, screen, clock):
                         dx_black, dy_black = 2, -1
                     elif input_combo_black == ['d', 's']:
                         dx_black, dy_black = 2, 1
-
+                
                     new_x_black, new_y_black = player_black.simulate_move(dx_black, dy_black)
                     #Player collision
                     if new_x_black == player_white.x and new_y_black == player_white.y:
@@ -198,20 +212,20 @@ def main_loop(grid, screen, clock):
                         if player_black.holding_flag:
                             player_black.holding_flag = False
                             print(f"Black player dropped the flag!")
-                            add_object(WHITE_FLAG, grid, Flag,  random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
+                            add_object(WHITE_FLAG, grid, Flag,  rand_free_space(grid)[0], rand_free_space(grid)[1])
                             flag_white = all_grid_objects[-1]
                             draw_grid(screen, grid)
                             pygame.display.update()
                         if player_white.holding_flag:
                             player_white.holding_flag = False
                             print(f"White player dropped the flag!")
-                            add_object(BLACK_FLAG, grid, Flag,  random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
+                            add_object(BLACK_FLAG, grid, Flag,  rand_free_space(grid)[0], rand_free_space(grid)[1])
                             flag_black = all_grid_objects[-1]
                             draw_grid(screen, grid)
                             pygame.display.update()
                         else:
-                            player_black.bounce( random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
-                            player_white.bounce( random.randint(1, ROWS - 2), random.randint(1, COLS - 2)) 
+                            player_black.bounce( rand_free_space(grid)[0], rand_free_space(grid)[1])
+                            player_white.bounce( rand_free_space(grid)[0], rand_free_space(grid)[1]) 
                     # Flag captured
                     elif new_x_black == flag_white.x and new_y_black == flag_white.y:
                         remove_object(grid, flag_white.x, flag_white.y)
@@ -221,11 +235,11 @@ def main_loop(grid, screen, clock):
                     # Player scored
                     elif new_x_black == goal_black.x and new_y_black == goal_black.y:
                         if player_black.holding_flag:
-                            player_black.bounce( random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
-                            flag_white = add_object(WHITE_FLAG, grid, Flag,  random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
+                            player_black.bounce( rand_free_space(grid)[0], rand_free_space(grid)[1])
+                            flag_white = add_object(WHITE_FLAG, grid, Flag,  rand_free_space(grid)[0], rand_free_space(grid)[1])
                             player_black.add_points(1)
                         else:
-                            player_black.bounce( random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
+                            player_black.bounce( rand_free_space(grid)[0], rand_free_space(grid)[1])
                             print("Don't come back empty handed!")
                     # Move the player to unoccupied space
                     else:
@@ -260,19 +274,19 @@ def main_loop(grid, screen, clock):
                         if player_white.holding_flag:
                             player_white.holding_flag = False
                             print(f"White player dropped the flag!")
-                            player_white.bounce( random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
-                            player_black.bounce( random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
-                            flag_black = add_object(BLACK_FLAG, grid, Flag,  random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
+                            player_white.bounce( rand_free_space(grid)[0], rand_free_space(grid)[1])
+                            player_black.bounce( rand_free_space(grid)[0], rand_free_space(grid)[1])
+                            flag_black = add_object(BLACK_FLAG, grid, Flag,  rand_free_space(grid)[0], rand_free_space(grid)[1])
 
                         if player_black.holding_flag:
                             player_black.holding_flag = False
                             print(f"Black player dropped the flag!")
-                            player_white.bounce( random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
-                            player_black.bounce( random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
-                            flag_black = add_object(WHITE_FLAG, grid, Flag,  random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
+                            player_white.bounce( rand_free_space(grid)[0], rand_free_space(grid)[1])
+                            player_black.bounce( rand_free_space(grid)[0], rand_free_space(grid)[1])
+                            flag_black = add_object(WHITE_FLAG, grid, Flag,  rand_free_space(grid)[0], rand_free_space(grid)[1])
                         else:
-                            player_black.bounce(random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
-                            player_white.bounce(random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
+                            player_black.bounce(rand_free_space(grid)[0], rand_free_space(grid)[1])
+                            player_white.bounce(rand_free_space(grid)[0], rand_free_space(grid)[1])
                     # Black Flag captured by White
                     elif new_x_white == flag_black.x and new_y_white == flag_black.y:
                         player_white.capture_flag()
@@ -282,11 +296,11 @@ def main_loop(grid, screen, clock):
                     # Player scored
                     elif new_x_white == goal_white.x and new_y_white == goal_white.y:
                         if player_white.holding_flag:
-                            player_white.bounce( random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
-                            flag_black = add_object(BLACK_FLAG, grid, Flag,  random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
+                            player_white.bounce( rand_free_space(grid)[0], rand_free_space(grid)[1])
+                            flag_black = add_object(BLACK_FLAG, grid, Flag,  rand_free_space(grid)[0], rand_free_space(grid)[1])
                             player_white.add_points(1)
                         else:
-                            player_white.bounce( random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
+                            player_white.bounce( rand_free_space(grid)[0], rand_free_space(grid)[1])
                             print("Don't come back empty handed!")
                     # Move the player to unoccupied space
                     else:
@@ -331,6 +345,8 @@ def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Horse of Course")
     clock = pygame.time.Clock()
+    pygame.mixer.music.load(MUSIC_TRACK_2)
+    pygame.mixer.music.play(0,0,0)
     
     # Set up the grid
     grid = Grid(ROWS, COLS)
@@ -340,10 +356,10 @@ def main():
         # Create the players
         add_object(BLACK, grid, Player, ROWS - 1, random.randint(0, COLS - 2))
         add_object(WHITE, grid, Player, 0, random.randint(1, COLS - 1))
-        add_object(BLACK_FLAG, grid, Flag, random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
-        add_object(WHITE_FLAG, grid, Flag, random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
         add_object(BLACK_GOAL, grid, Goal, ROWS - 1, COLS - 1)
         add_object(WHITE_GOAL, grid, Goal, 0, 0)
+        add_object(BLACK_FLAG, grid, Flag, random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
+        add_object(WHITE_FLAG, grid, Flag, random.randint(1, ROWS - 2), random.randint(1, COLS - 2))
         print(grid)
         black, white = main_loop(grid, screen, clock)
         if black > white:
