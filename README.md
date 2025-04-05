@@ -2,14 +2,17 @@
 
 ### Author J. H.
 This is very much a work in progress.
+zip files containing the build versions of the game can be found in the 'dist' folder of the github repo. The latest version of this program's code can be viewed from the root directory of this repo.
+- main.py heart of the game
+- Player_Class.py , Grid_Class.py, and Settings.py attend to the player and board objects.
+- image_files contains the .png's of the game objects
+- music_files contains a couple ai generated soundtracks.
 
 ### features to be added
-- score board
-- timer (basic form)
-- victory screen (basic form)
+- victory screen
 - sounds
 - animations
-- Set score limit in app (basic form)
+- point limit (in app)
 
 Images in the 'image_files' are from free 3rd party website. I do not own them.
 
